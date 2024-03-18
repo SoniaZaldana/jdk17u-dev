@@ -599,3 +599,5 @@ jdk_containers_extended = \
     :jdk_io \
     :jdk_nio \
     :jdk_svc
+
+jmod = test/jdk/jdk/modules/etc/JmodExcludedFiles.java
