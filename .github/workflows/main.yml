@@ -128,6 +128,7 @@ jobs:
     with:
       platform: linux-x64
       gcc-major-version: '10'
+      extra-conf-options: '--enable-asan'
       configure-arguments: ${{ github.event.inputs.configure-arguments }}
       make-arguments: ${{ github.event.inputs.make-arguments }}
     # The linux-x64 jdk bundle is used as buildjdk for the cross-compile job
@@ -145,7 +146,7 @@ jobs:
       # Some multilib libraries do not have proper inter-dependencies, so we have to
       # install their dependencies manually.
       apt-extra-packages: 'libfreetype-dev:i386 libtiff-dev:i386 libcupsimage2-dev:i386'
-      extra-conf-options: '--with-target-bits=32'
+      extra-conf-options: '--with-target-bits=32 --enable-asan'
       configure-arguments: ${{ github.event.inputs.configure-arguments }}
       make-arguments: ${{ github.event.inputs.make-arguments }}
     if: needs.select.outputs.linux-x86 == 'true'
@@ -159,7 +160,7 @@ jobs:
       make-target: 'hotspot'
       debug-levels: '[ "debug" ]'
       gcc-major-version: '10'
-      extra-conf-options: '--disable-precompiled-headers'
+      extra-conf-options: '--disable-precompiled-headers --enable-asan'
       configure-arguments: ${{ github.event.inputs.configure-arguments }}
       make-arguments: ${{ github.event.inputs.make-arguments }}
     if: needs.select.outputs.linux-x64-variants == 'true'
@@ -173,7 +174,7 @@ jobs:
       make-target: 'hotspot'
       debug-levels: '[ "debug" ]'
       gcc-major-version: '10'
-      extra-conf-options: '--with-jvm-variants=zero --disable-precompiled-headers'
+      extra-conf-options: '--with-jvm-variants=zero --disable-precompiled-headers --enable-asan'
       configure-arguments: ${{ github.event.inputs.configure-arguments }}
       make-arguments: ${{ github.event.inputs.make-arguments }}
     if: needs.select.outputs.linux-x64-variants == 'true'
@@ -187,7 +188,7 @@ jobs:
       make-target: 'hotspot'
       debug-levels: '[ "debug" ]'
       gcc-major-version: '10'
-      extra-conf-options: '--with-jvm-variants=minimal --disable-precompiled-headers'
+      extra-conf-options: '--with-jvm-variants=minimal --disable-precompiled-headers --enable-asan'
       configure-arguments: ${{ github.event.inputs.configure-arguments }}
       make-arguments: ${{ github.event.inputs.make-arguments }}
     if: needs.select.outputs.linux-x64-variants == 'true'
@@ -202,7 +203,7 @@ jobs:
       # Technically this is not the "debug" level, but we can't inject a new matrix state for just this job
       debug-levels: '[ "debug" ]'
       gcc-major-version: '10'
-      extra-conf-options: '--with-debug-level=optimized --disable-precompiled-headers'
+      extra-conf-options: '--with-debug-level=optimized --disable-precompiled-headers --enable-asan'
       configure-arguments: ${{ github.event.inputs.configure-arguments }}
       make-arguments: ${{ github.event.inputs.make-arguments }}
     if: needs.select.outputs.linux-x64-variants == 'true'
@@ -215,6 +216,7 @@ jobs:
     uses: ./.github/workflows/build-cross-compile.yml
     with:
       gcc-major-version: '10'
+      extra-conf-options: '--enable-asan'
       configure-arguments: ${{ github.event.inputs.configure-arguments }}
       make-arguments: ${{ github.event.inputs.make-arguments }}
     if: needs.select.outputs.linux-cross-compile == 'true'
@@ -226,6 +228,7 @@ jobs:
     with:
       platform: macos-x64
       xcode-toolset-version: '12.5.1'
+      extra-conf-options: '--enable-asan'
       configure-arguments: ${{ github.event.inputs.configure-arguments }}
       make-arguments: ${{ github.event.inputs.make-arguments }}
     if: needs.select.outputs.macos-x64 == 'true'
@@ -237,7 +240,7 @@ jobs:
     with:
       platform: macos-aarch64
       xcode-toolset-version: '12.5.1'
-      extra-conf-options: '--openjdk-target=aarch64-apple-darwin'
+      extra-conf-options: '--openjdk-target=aarch64-apple-darwin --enable-asan'
       configure-arguments: ${{ github.event.inputs.configure-arguments }}
       make-arguments: ${{ github.event.inputs.make-arguments }}
     if: needs.select.outputs.macos-aarch64 == 'true'
@@ -250,6 +253,7 @@ jobs:
       platform: windows-x64
       msvc-toolset-version: '14.29'
       msvc-toolset-architecture: 'x86.x64'
+      extra-conf-options: '--enable-asan'
       configure-arguments: ${{ github.event.inputs.configure-arguments }}
       make-arguments: ${{ github.event.inputs.make-arguments }}
     if: needs.select.outputs.windows-x64 == 'true'
@@ -263,7 +267,7 @@ jobs:
       msvc-toolset-version: '14.29'
       msvc-toolset-architecture: 'arm64'
       make-target: 'hotspot'
-      extra-conf-options: '--openjdk-target=aarch64-unknown-cygwin'
+      extra-conf-options: '--openjdk-target=aarch64-unknown-cygwin --enable-asan'
       configure-arguments: ${{ github.event.inputs.configure-arguments }}
       make-arguments: ${{ github.event.inputs.make-arguments }}
     if: needs.select.outputs.windows-aarch64 == 'true'
